@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>NBTI · 牛逼人格测试</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9edf2 100%);
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            padding: 20px;
+            color: #1e2a3e;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+        }
+        .header p {
+            color: #5a6e7c;
+            font-size: 0.9rem;
+        }
+        /* 简介卡片 */
+        .info-card {
+            background: #ffffffdd;
+            backdrop-filter: blur(2px);
+            border-radius: 24px;
+            padding: 18px 20px;
+            margin-bottom: 20px;
+            border: 1px solid #ffe2e8;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+        .info-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #c2415c;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .info-text {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #2d3a4a;
+            margin-bottom: 12px;
+        }
+        .info-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 12px 0;
+        }
+        .dimension {
+            background: #fef2f4;
+            border-radius: 40px;
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #b91c44;
+        }
+        .author {
+            text-align: right;
+            font-size: 0.75rem;
+            color: #8ca0ae;
+            border-top: 1px dashed #ffe2e8;
+            padding-top: 10px;
+            margin-top: 8px;
+        }
+        .fun-note {
+            background: #fff6e8;
+            border-radius: 16px;
+            padding: 10px 14px;
+            margin: 12px 0 8px;
+            font-size: 0.8rem;
+            color: #b45f1b;
+        }
+        .progress-container {
+            background: #e2e8f0;
+            border-radius: 30px;
+            height: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #f093fb, #f5576c);
+            width: 0%;
+            height: 100%;
+            transition: width 0.2s ease;
+            border-radius: 30px;
+        }
+        .question-card {
+            background: white;
+            border-radius: 28px;
+            padding: 20px 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+        .question-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .q-num {
+            background: #f093fb20;
+            color: #c2415c;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .q-text {
+            flex: 1;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .option {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 14px;
+            background: #f8fafc;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.1s;
+            border: 1px solid #e2edf2;
+        }
+        .option:hover {
+            background: #fff0f3;
+            border-color: #fbc4d0;
+        }
+        .option input {
+            margin-top: 3px;
+            accent-color: #f5576c;
+            transform: scale(1.1);
+            cursor: pointer;
+        }
+        .option label {
+            flex: 1;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            cursor: pointer;
+            color: #1e2a3e;
+        }
+        .submit-area {
+            text-align: center;
+            margin: 30px 0 20px;
+        }
+        .btn {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            border: none;
+            padding: 14px 32px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            border-radius: 60px;
+            cursor: pointer;
+            box-shadow: 0 6px 14px rgba(245,87,108,0.3);
+            transition: transform 0.1s, box-shadow 0.1s;
+            width: 80%;
+            max-width: 280px;
+        }
+        .btn:active {
+            transform: scale(0.97);
+        }
+        .result-card {
+            background: white;
+            border-radius: 32px;
+            padding: 28px 24px;
+            margin-top: 30px;
+            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.15);
+            text-align: center;
+            display: none;
+        }
+        .result-img {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .result-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .result-name {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+        }
+        .result-sub {
+            font-size: 1rem;
+            color: #5a6e7c;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        .result-desc {
+            text-align: left;
+            background: #fef2f4;
+            padding: 18px;
+            border-radius: 24px;
+            margin: 20px 0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .result-encourage {
+            background: #eef2ff;
+            padding: 16px;
+            border-radius: 24px;
+            margin-top: 10px;
+            font-weight: 500;
+            color: #2d3a4a;
+        }
+        .restart-btn {
+            background: #e2e8f0;
+            color: #2c3e50;
+            margin-top: 20px;
+            box-shadow: none;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #8ca0ae;
+            margin-top: 30px;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 12px;
+            }
+            .question-card {
+                padding: 16px;
+            }
+            .option {
+                padding: 8px 12px;
+            }
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🧠 NBTI · 牛逼人格测试</h1>
+        <p>40道选择题 · 测测你哪方面最牛</p>
+    </div>
+
+    <!-- 简介卡片 -->
+    <div class="info-card">
+        <div class="info-title">📊 测评维度 & 心理学小依据</div>
+        <div class="info-text">
+            这个测试参考了积极心理学里的“幸福五要素”和弗洛伊德那套心理动力理论，但别怕，我们全翻译成人话了。<br>
+            一共四个维度，每个维度就是你这方面“牛不牛”的指标：
+        </div>
+        <div class="info-grid">
+            <span class="dimension">😄 P · 快乐指数（能不能开心起来）</span>
+            <span class="dimension">⚡ E · 专注行动力（做事能不能沉浸进去）</span>
+            <span class="dimension">👥 R · 关系能量（跟人相处顺不顺畅）</span>
+            <span class="dimension">🏆 MA · 意义与成就感（觉得自己活得有没有价值）</span>
+        </div>
+        <div class="fun-note">
+            🎉 <strong>趣味说明</strong><br>
+            这是一套完全自创的“不正经心理测试”，不严谨、不权威、但足够好笑！40道题测出你是“哈哈怪”、“丧彪”还是“自燃人”。结果分16种人格，每种都有专属吐槽和反向鼓励。仅供娱乐和朋友圈装逼使用～ 认真你就输了，但笑了你就赢了。
+        </div>
+        <div class="author">
+            ✨ 作者：Kiana 灵枢 · 瞎编但走心版 ✨
+        </div>
+    </div>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <form id="testForm">
+        <div id="questionsContainer"></div>
+        <div class="submit-area">
+            <button type="button" class="btn" id="submitBtn">✨ 揭示我的牛逼人格 ✨</button>
+        </div>
+    </form>
+
+    <div id="resultContainer" class="result-card"></div>
+    <footer>💡 每题选最像你的选项 · 结果仅供快乐参考</footer>
+</div>
+
+<script>
+    // --------------------------------------------------------------
+    // 40道题目 (全部口语化，无难懂名词)
+    // 每题选项分值: A=3, B=2, C=1, D=0 (正向计分)
+    // 维度分配: 1-10 P, 11-20 E, 21-30 R, 31-40 MA
+    // --------------------------------------------------------------
+    const questions = [
+        { text: "你的周一到周五，通常是一种怎样的状态？", options: ["充满期待！每天都有新挑战，干就完了！", "自然醒，但醒来一看才凌晨5点——因为焦虑根本睡不着，操。", "被闹钟连环夺命call，像丧尸一样爬起来，灵魂还在床上。", "星期几？我的状态完全取决于昨晚追的剧好不好看，跟周几无关。"] },
+        { text: "周五晚上，你通常都在干嘛？", options: ["约朋友出去嗨，或者去健身/学习/搞副业——周末比上班还忙，但我乐意。", "疯狂赶工，争取把活干完，周末才能安心躺平。", "瘫在沙发上刷短视频，当一颗快乐（但麻木）的沙发土豆。", "打游戏打到天亮，哪怕明天还要上班/上课——周五不熬，周六白熬。"] },
+        { text: "用一句话形容你现在的精神状态，你会选哪句？", options: ["我是一个乐呵呵的傻子，在快乐摆烂和偶尔支棱之间反复横跳。", "我是一只发疯的吗喽，每天都在“嘶嘶嘶”地反抗生活。", "我是一个快要爆炸的高压锅，随时可能喷气。", "我是一具会呼吸的尸体——上班/上学时尤其明显。"] },
+        { text: "当“这个月的KPI/考试成绩还差一半”这种噩耗降临，你的第一反应是：", options: ["列个表，分步骤，接下来这几天我要把效率拉满，创造奇迹！", "焦虑地刷手机，一边骂自己一边拖延，最后在DDL前爆肝搞定。", "我已经预见到了，正在摸鱼中酝酿辞职/弃考，但还没想好借口。", "差一半就差一半呗，人生又不是只有KPI，天又不会塌。"] },
+        { text: "在电梯里遇到那个你不太喜欢但不得不打招呼的同事/同学，你会：", options: ["无所谓，点个头就完事了，大家都是成年人。", "社牛附体，主动尬聊，把尴尬留给对方——“哎呀你今天穿得真精神！”", "尬笑一下，然后迅速低头看手机，假装有重要消息。", "假装看手机，没看见——我手机突然变得超级好看。"] },
+        { text: "最近一次情绪崩溃，是因为什么？", options: ["努力了很久的一件事还是搞砸了，觉得自己好废物。", "外卖被偷了/快递丢了/手机摔了——这种小事突然让我绷不住了。", "别人随口说的一句话/一个眼神，让我内耗了一整天。", "不知道，就是突然想哭，没有理由，可能大姨妈/大姨夫来了吧。"] },
+        { text: "你觉得“幸福”这东西，说白了是啥？", options: ["实现自我价值，做自己认可的事，哪怕累也开心。", "有人爱，有期待，有火锅，有WiFi。", "钱多事少离家近，睡觉睡到自然醒。", "活在当下，享受每一个瞬间——现在快乐就是真的快乐。"] },
+        { text: "当老板/老师给你布置了一个看起来“不可能完成”的任务，你第一反应是：", options: ["迅速拆解任务，思考怎么分步完成——难是难，但不是不能做。", "直接提出质疑：“这真的能做吗？您确定？”", "心里骂娘，嘴上说“好的”，然后回去焦虑。", "先放着，反正船到桥头自然直，最后总有办法（或者没有）。"] },
+        { text: "在小组作业/团队合作中，你通常扮演什么角色？", options: ["那个想一出是一出的创意担当，负责天马行空。", "负责调节气氛、避免冲突的人——“大家都别吵，听我说一句…”", "负责掌控全局、分配任务、催进度的人（哪怕不是组长）。", "那个默默做事但最后功劳都不是自己的人——我就是个工具人。"] },
+        { text: "你的“社交能量”大概是哪种水平？", options: ["社交？我已经很久没有过真正的社交了，微信都不咋看。", "看心情，有时候想聊到天亮，有时候想一个人死一死。", "社交是我充电的方式，我就是Party King/Queen，人越多我越嗨。", "社交对我来说是耗电，独处才充电——聊半小时我得躺半天回血。"] },
+        { text: "面对一份繁琐又没技术含量的重复工作（比如填表、改格式、复制粘贴），你：", options: ["试图找捷径/写个脚本/搞个模板——能省一分钟是一分钟。", "一边骂一边做，做完去吃顿好的奖励自己。", "生无可恋地做完，内心已经死了八百遍。", "做不完明天再说，反正也不是什么要紧事。"] },
+        { text: "你辛辛苦苦做的方案/作业，被领导/老师一句“感觉不对”全盘否定，你会：", options: ["据理力争，让他说出具体哪里不对——“请给我明确的修改方向。”", "心里mmp，脸上笑嘻嘻，回去重做——还能咋的。", "直接emo，怀疑自己是废物，在工位上/教室里偷偷自闭。", "无所谓，改就改呗，反正你说了算。"] },
+        { text: "你觉得“内卷”这玩意儿，本质上是啥？", options: ["大家都没想清楚自己要什么，盲目跟着别人跑。", "资源有限，不得不抢，没办法。", "一种毫无意义的自我消耗，卷到最后大家都累。", "这是社会的问题，和我无关，我卷不动就不卷了。"] },
+        { text: "如果给你一次“加点”的机会，你最想要下面哪种超能力？", options: ["无敌的行动力——想到立马去做，绝不拖延。", "超强的抗压能力——怎么被骂都无所谓，内心毫无波澜。", "一眼看穿本质的能力——总是能发现问题核心。", "惊人的自愈能力——不管多难过，睡一觉就能满血复活。"] },
+        { text: "当你遇到职业/学业瓶颈期，感觉怎么也上不去的时候，你会：", options: ["疯狂学习新技能，看书、上课、找前辈请教——我就不信突破不了。", "出去旅游/换换心情/放空几天，回来再说。", "找人倾诉，求安慰，求建议，求抱抱。", "摆烂，等这个阶段自己过去——反正总会过去的吧？"] },
+        { text: "你觉得“摸鱼”这件事，最大的意义是啥？", options: ["为了更好的产出——劳逸结合，摸完鱼效率更高。", "报复资本家/应试教育——你让我不爽，我就摸给你看。", "为了摸鱼而摸鱼，摸鱼本身就是意义。", "保存精力，为了下班/下课后的真正生活。"] },
+        { text: "如果同事/同学甩锅给你，你会怎么办？", options: ["用事实和证据冷静地证明不是自己的锅——“请看聊天记录。”", "当场撕破脸，把锅狠狠甩回去——“这特么是你的事！”", "默默背了，但心里记仇，下次绝不帮ta。", "无所谓，反正大家知道ta是什么样的人，我不需要解释。"] },
+        { text: "你对“加班/加练/额外任务”的态度是：", options: ["如果是为自己的项目/想学的东西，可以接受；为别人打工？不行。", "为了钱/分数/绩效，可以忍，但心里会骂。", "反正也逃不掉，认了，就当积德。", "万恶之源，绝不妥协——到点就走，谁爱加谁加。"] },
+        { text: "你的办公桌/书桌/学习区域，通常是啥画风？", options: ["乱中有序，我能找到东西就行——你说乱，我说这是创作现场。", "井井有条，强迫症式分类——每支笔都有自己的家。", "堆满了零食、水杯、充电线、纸巾…像一个微型垃圾场。", "啥也没有，极简风——干净得像没人用。"] },
+        { text: "下面哪种同事/同学，是你最最最不能忍的？", options: ["没主见只会附和的——“嗯嗯”“对对对”“你说得都对”——烦死了。", "阴阳怪气的，说话拐弯抹角，不直接说。", "情绪化的，动不动就炸，一点小事就摔东西。", "能力差还爱邀功的——活都是别人干的，功劳都是ta的。"] },
+        { text: "你觉得你的“潜意识”（就是你自己都没意识到的那些习惯）对你行为影响有多大？", options: ["很大，我经常下意识地讨好别人，事后才反应过来。", "很大，我经常下意识地攻击/怼人，控制不住。", "很大，我经常不知道自己为什么就做了某件事。", "一般吧，我觉得我还是挺理性的，能控制自己。"] },
+        { text: "当你感到愤怒的时候，你通常的表现是：", options: ["转化为动力，去健身、去搞事业、去写日记——化悲愤为力量。", "直接爆发，忍不了一点——当场让对方知道我不高兴。", "阴阳怪气，用冷暴力表达——“没事，你开心就好。”（其实有事）", "压抑下去，不想惹事，但内心已经骂了八百遍。"] },
+        { text: "你的“动物本能”（就是最原始、最不要脸的那个你）此刻最想干嘛？", options: ["暴富然后躺平，这辈子再也不上班。", "毁灭世界，或者至少毁灭公司/学校。", "谈个甜甜的恋爱，被人宠着。", "吃顿好的，或者睡到自然醒——简单的快乐。"] },
+        { text: "你的“内心小警察”（就是你脑子里一直念叨你的那个声音）经常对你说啥？", options: ["“你怎么又在玩？快去学习/工作！”", "“你这样不对，你应该更善良、更努力一点。”", "“你要变得更优秀才行，不然就完蛋了。”", "它不说话，它已经对我彻底失望了，放弃了。"] },
+        { text: "在做重要决定的时候（比如换工作、选专业、要不要表白），你的“内心戏”通常是：", options: ["分析利弊，列个Excel表，像个机器人一样计算。", "想成功后的画面，然后热血沸腾地去干。", "凭感觉，觉得行就冲——信命也信自己。", "想一万种失败的可能，最后不敢动，继续待在原地。"] },
+        { text: "当人际关系出现冲突或尴尬时，你最常用的“防御方式”是：", options: ["用幽默化解——开个玩笑，把气氛带过去。", "逃避——不想面对就躲起来，当没发生。", "合理化——给自己找借口，“其实也没啥大不了的”。", "升华——把情绪投入到工作或创作中，用产出消化情绪。"] },
+        { text: "你觉得自己“配不配”拥有好东西（好工作、好对象、好运气）？", options: ["从来没有“我不配”的感觉——我觉得我超配，我值得一切美好。", "很少，大部分时候我觉得我还行，配得上。", "偶尔会，特别是面对很优秀的人或很好的机会时。", "经常有，“我不配”是我的人生BGM。"] },
+        { text: "你怎么看待自己的“阴暗面”（比如嫉妒、自私、懒惰、小心眼）？", options: ["压抑它，假装自己是个圣人——我没有阴暗面，我很阳光。", "承认它，反正每个人都有阴暗面，我不特殊。", "利用它——把嫉妒变成动力，把懒惰变成找捷径的能力。", "放纵它——我就是这样的人，爱咋咋地。"] },
+        { text: "如果让你给自己目前的人生剧本选个类型，你会选：", options: ["荒诞剧——毫无逻辑，莫名其妙，但我看开了。", "喜剧——都是乐子，笑就完了。", "史诗——我在经历磨难，但我相信这是英雄之旅的一部分。", "悲剧——总是事与愿违，我已经习惯了。"] },
+        { text: "你觉得你的童年经历，对你现在的生活影响有多大？", options: ["非常大，我在用一生治愈童年，但正在努力。", "很大，有些模式很难摆脱。", "一般，过去就过去了，我不想老提。", "没感觉，我不太记得了，或者觉得没影响。"] },
+        { text: "回顾最近三个月，你的整体情绪状态更接近哪一句？", options: ["经常有小小的快乐时刻，总体来说还不错。", "平静，没什么大起大落，不好不坏。", "焦虑，总是在担心还没发生的事情，心累。", "丧，丧到谷底，没有快乐可言，像一潭死水。"] },
+        { text: "你有多经常体验到那种“忘记时间、完全沉浸”的状态（比如打游戏、画画、写代码时）？", options: ["经常，我在工作、学习、爱好中都能进入这种状态。", "偶尔，一般在打游戏、看剧、刷手机的时候。", "极少，我总是分心，五分钟就要看一次手机。", "从来没体验过，不知道那是啥感觉。"] },
+        { text: "你身边有几个可以毫无顾忌、半夜三点打电话倾诉心事的真朋友？", options: ["1-2个，足够了，真的。", "3-5个，我是个社牛，朋友多。", "很多，但感觉没有真正能懂的——数量不等于质量。", "0个，我是一个人，有事自己扛。"] },
+        { text: "你觉得你目前的生活，有意义吗？", options: ["有，我知道自己在为什么而活，哪怕累也有方向。", "正在寻找，我相信会找到的——先活着再说。", "意义是什么？好吃吗？别问这种哲学问题，头疼。", "没有，我觉得活着就是在凑数，没什么意义。"] },
+        { text: "你怎么看待“成就”这件事？", options: ["成就很重要，是我价值的证明——我需要被认可。", "我取得过成就，但我觉得那只是运气，不是我真牛。", "成就不重要，开心就好，活着又不是为了拿奖。", "我不配拥有成就，我就是个loser，别跟我提这个。"] },
+        { text: "如果让你定义“成功”，你会选下面哪一句？", options: ["成为自己想成为的人，过上自己想过的生活。", "不用再看任何人脸色，想说“不”就说“不”。", "能吃能睡，身体健康，没病没灾。", "比同龄人过得好，朋友圈里最靓的那个。"] },
+        { text: "当你完成了一个小目标（比如今天没迟到、做完了PPT、跑完了3公里），你会：", options: ["在心里默默给自己点个赞——“我真是个天才！”", "发个朋友圈/发条微博炫耀一下，等点赞。", "觉得这是应该的，没什么好高兴的。", "觉得只是侥幸，明天可能就不行了。"] },
+        { text: "你相信“明天会更好”这句话吗？", options: ["相信，我是天生的乐观派，总觉得好日子在后头。", "不信，我觉得世界不会好了，只会越来越烂。", "信不信的，日子不都得过吗——我选择不信但活着。", "我只相信现在的每一分钟，明天的事明天再说。"] },
+        { text: "下面四个幸福要素，你觉得你现在最缺哪一个？", options: ["快乐情绪——我已经很久没真正开心过了，笑都是装的。", "专注投入——我做啥都提不起劲，像一具行尸走肉。", "人际关系——我很孤独，感觉没人真正在意我，微信响了都是广告。", "意义与成就——我不知道我活着是为了啥，也觉得啥都做不好。"] },
+        { text: "如果让你送给自己一句鼓励的话，你会选：", options: ["你已经很棒了，辛苦了，真的。", "再坚持一下，马上就结束了。", "别想太多，干就完了！", "活着就行，要啥自行车。"] }
+    ];
+
+    const scoreMap = {0:3, 1:2, 2:1, 3:0};
+
+    // --------------------------------------------------------------
+    // 16种人格结果（完整文案，无省略）
+    // 图片文件名对应 images/ 文件夹中的图片
+    // --------------------------------------------------------------
+    const personalities = {
+        "哈哈！！": { name:"哈哈怪", full:"Happy Ass Happy Attitude", translation:"哈哈怪", image:"HAHA.jpg",
+            desc:"你的大脑里仿佛装了一个24小时不间断的弹幕生成器，而且弹幕内容全是“哈哈哈哈哈哈”。别人emo的时候你在哈哈，别人焦虑的时候你还在哈哈，别人哭丧着脸说“生活好难”的时候，你笑着说“难就难呗，又不是难一天了”。你不是没心没肺，你是把心肺都练成了八块腹肌的笑肌。上课/上班时，你憋笑憋到浑身发抖、眼泪直流的样子，是全教室/全办公室最靓的风景线。老师/老板以为你在认真听讲感动哭了，其实你只是在想“他刚才那个口误好好笑”。你的朋友经常问你：“你到底在笑什么？”你答不上来，因为你自己也不知道——就是想笑。有人觉得你像个傻子，但你心里清楚：这个世界已经够苦了，我不笑难道哭吗？",
+            encourage:"兄弟/姐妹，你给我听好了：你这种“快乐病毒”体质，在人均玉玉、内耗成灾的2026年，简直就是熊猫血级别的稀缺资源！你知道你牛在哪儿吗？你牛在天塌下来你都觉得是个大号被子，盖上去还挺暖和。别人焦虑得掉头发，你快乐得长新头发；别人失眠数羊，你笑着睡得像死猪。你的快乐不是没心没肺，是顶级心理防御机制，学名叫“情绪免疫力”，俗名叫“老子就是不垮”。所以继续哈哈哈吧，你是你朋友圈里的快乐充电宝，有你在的地方，丧气都得绕道走。牛逼！" },
+        "活1！！": { name:"及时行乐崽", full:"You Only Live Once", translation:"及时行乐崽", image:"LEZI.jpg",
+            desc:"你的人生信条翻译成人话就是：“死了就没了，所以现在必须爽！”周五晚上你绝不加班/复习，哪怕DDL就在下周一——因为“周五的快乐也是快乐，延迟满足？那是下周一的我该操心的事”。看到喜欢的东西，哪怕下个月吃土也要买。你的购物车永远清空得比你的银行存款快。你的朋友劝你“省着点花”，你翻个白眼说：“省下来的钱，能买回现在的快乐吗？”你也不是完全不努力，你只是把“努力”和“享乐”的优先级调换了——先爽，再想办法。神奇的是，你往往还真能在DDL前爆肝搞定一切。你就像一只一边晒太阳一边捉虫的懒鸟，别人觉得你早晚饿死，结果你活得好好的。你常说的一句话是：“以后的事以后再说，现在的我就是要浪。”",
+            encourage:"喂，YOLO人！你是不是经常被人说“没心没肺”“只顾眼前”？来，我告诉你他们不懂的真相：你这种“活在当下”的能力，是90%的人花一辈子都学不会的超能力！他们总在担心“万一以后怎么办”，结果以后来了，他们还在担心更以后的以后，一辈子都没真正活过。你呢？你吃到了最香的饭，看到了最美的晚霞，谈到了最甜的恋爱——就算明天世界毁灭，你也赚到了。你的牛逼之处在于：你从不欠“过去的自己”的债。因为你每一刻都在满足当时的自己。这种零内耗、零后悔的人生模式，才是真正的顶级活法。继续浪，但记得稍微留点吃土时的饭钱就行，啊哈哈哈！" },
+        "哇哇！！": { name:"惊叹机", full:"Wonderful Oh Wow", translation:"惊叹机/土拨鼠", image:"WOW!.jpg",
+            desc:"你就是人类版的“土拨鼠尖叫”表情包。看到路边开了一朵小花——“哇哦！”；食堂出了新菜——“哇哦！”；同事换了个发型——“哇哦！”；手机弹出一条通知——“哇哦！”你的朋友们经常被你一惊一乍的样子尬到脚趾抠出三室一厅，但奇怪的是，跟你待久了，他们看世界也觉得顺眼多了。你的日常就是一部“没见过世面”的连续剧：坐个地铁你觉得好神奇，下个雨你觉得好浪漫，连打印机吐出纸来你都想鼓掌。有人嫌你吵，但你不在乎——因为你是真的觉得这个世界好有意思啊！你的快乐阈值低得离谱，低到一杯奶茶都能让你转圈圈。别人觉得你像个幼儿园小朋友，但你心里知道：长大了还能对世界保持好奇，是一种超能力。",
+            encourage:"嘿，WOW小人！你是不是经常被说“大惊小怪”“没见过世面”？我告诉你，那些说你的人才没见过世面——他们没见过一个成年人还能像孩子一样对世界发光。你知道你牛逼在哪儿吗？你牛逼在：你的眼睛里永远有星星。别人看啥都是“就那样”，你看啥都是“哇塞”。这种好奇心和新鲜感，是创造力的永动机，是枯燥生活的防弹衣。做设计、做策划、做内容、做任何需要灵感的活儿，你都是天生的MVP。因为你总能从最平常的东西里发现别人看不见的趣味。继续“哇哦”下去吧，你是这个世界最后的浪漫主义者，牛逼！" },
+        "我废！！": { name:"丧彪", full:"Fuck My Life", translation:"丧彪/吗喽本喽", image:"SANG.jpg",
+            desc:"你的微信状态永远是“emo”，你的手机壁纸写着“毁灭吧赶紧的”，你的口头禅是“FML”。早上闹钟响的时候，你觉得自己是一具被吵醒的尸体；上班/上课的时候，你觉得自己的灵魂已经飘到天花板上俯瞰这个无聊的人间。但是！重点来了——你嘴上喊着丧，手上该干的活一样没少。DDL前你照样能爆肝交出一份不错的东西；被老板/老师骂了，你骂骂咧咧地改完，然后继续丧。你就像一只骂骂咧咧但还是在搬砖的彪悍吗喽，一边“嘶嘶嘶”地叫，一边把砖码得整整齐齐。你的朋友问你：“你不是说你要摆烂吗？怎么又卷起来了？”你翻个白眼：“我嘴上摆烂，身体很诚实，不行吗？”你的人生哲学是：既然逃不掉，那就边骂边干。你不是真的想死，你只是懒得活得太用力。",
+            encourage:"那位天天喊“FML”的同学/同事，你给我站住！你是不是觉得自己很废？错！大错特错！你知道你有多牛吗？你牛逼在：你认清了生活的真相（确实挺操蛋的），但你没有选择彻底躺平，而是选择了一边骂一边干。这才是真正的勇士好吗！那种每天打鸡血的人，要么是骗子，要么是还没被生活毒打过。你这种“丧式乐观”，让你在高压环境里像一只打不死的小强——别人被骂一次就崩溃了，你被骂十次还能一边翻白眼一边改方案。你的心理韧性，比那些“正能量狂魔”强一百倍。继续丧，继续骂，继续干。你是人间真实，你是打不死的小强。牛逼！" },
+        "干吧！！": { name:"干就完了", full:"Damn Outstanding Execution Robot", translation:"干就完了", image:"DOER.jpg",
+            desc:"你的字典里没有“犹豫”这两个字。当别人还在纠结“这个方案行不行”“要不要先看看别人怎么做”的时候，你已经做出了第一版，并且已经在改第二版了。你的座右铭是：“想都是问题，做才是答案”，虽然你压根没听过这句话，但你天生就是这么活的。小组作业里，你就是那个“只要交给ta就放心了”的神。拖延症患者看你就像看外星人：“你怎么能说干就干？不需要心理建设吗？”你一脸茫然：“需要吗？”你不是不害怕失败，你是根本没空害怕。在你眼里，失败只是“第一版不行，再来一版”的信号。你的执行速度快到身边的人怀疑你一天有48小时。你常说的一句话是：“别BB了，先动手。”",
+            encourage:"喂，DOER！你是不是经常被人说“太着急”“太莽撞”？来，我告诉你：你这种“想到就干”的执行力，是核武器级别的天赋！你知道这个世界上有多少人被“完美主义”卡死吗？有多少人在“准备准备再准备”中把机会等没了？你没有。你直接冲，边冲边调整。等你已经跑到终点了，那些完美主义者还在系鞋带。你的牛逼之处在于：你把“完成”看得比“完美”重要一万倍。而事实证明，完成的人最后往往比等待完美的人更接近完美。所以继续冲，别停。你是所有老板、导师、团队梦寐以求的人形火箭。牛逼！" },
+        "拿捏！！": { name:"控场王", full:"Control The Real Life", translation:"控场王/拿捏怪", image:"CTRL.jpg",
+            desc:"你的人生键盘上永远按着Ctrl键——Ctrl+S是习惯（随时保存），Ctrl+Z是本能（随时反悔），Ctrl+C/V是基操（复制粘贴效率拉满）。不管是小组讨论还是工作会议，你总是不知不觉就成了那个定调子、分任务、催进度、做总结的人。你不一定是名义上的组长/领导，但所有人都默认“听你的”。你的电脑桌面是整齐的，你的文件夹是分类的，你的日程表是精确到半小时的。你见不得混乱，就像洁癖见不得灰尘。朋友说你“控制欲强”，你微微一笑：“这叫掌控感，不叫控制欲。”你擅长在迷雾中画出一条线，然后说：“大家跟着这条线走。”更神奇的是，那条线往往是对的。你常说：“别慌，我来捋一下。”",
+            encourage:"那位总爱“拿捏”一切的CTRL人，你是不是经常被说“太强势”“管太多”？我告诉你：你的控场能力，是无数混乱团队做梦都想要的神器！你知道有多少项目死在“没人做主”上吗？有多少会议开成“茶话会”因为没有你这样的人拍板？你就是那个在暴风雨中掌舵的人，有你在，大家才有方向。你的牛逼之处在于：你能把一团乱麻梳成整齐的麻花辫。这种秩序感、执行力、判断力，在职场里就是硬通货，在学业里就是高分密码。继续拿捏，继续控场。你不是控制狂，你是混乱中的定海神针。牛逼！" },
+        "书虫！！": { name:"极客怪", full:"Never Ending Research & Development", translation:"极客怪/书呆子战神", image:"JIKE.jpg",
+            desc:"你的脑子里建了一座博物馆，里面收藏着各种冷知识、流程图、数据表格、代码片段、公式定理。别人聊明星八卦，你在研究Excel函数；别人刷短视频，你在看技术文档；别人午休，你在刷LeetCode。你的朋友经常被你突然冒出来的专业术语整懵：“你能不能讲人话？”你试着讲人话，结果讲出来的是“人话版的专业术语”，他们还是听不懂。你放弃了，觉得“他们不懂就算了，反正这个世界是靠逻辑运行的”。你不是社恐，你只是觉得“跟人聊天好低效，不如看书”。你的快乐来源是：搞懂一个复杂概念、跑通一段代码、解开一道难题。那种“我懂了”的快感，比谈恋爱还爽。你常被说“书呆子”“nerd”，你点点头：“谢谢夸奖。”",
+            encourage:"嘿，NERD！你是不是经常被人说“不合群”“太宅太闷”？来来来，我告诉你一个秘密：你这种深度专注和系统思考的能力，是AI都羡慕的天赋！在这个浮躁的时代，大部分人只能刷15秒的短视频，而你却能盯着一个难题看几个小时。你能看到别人看不到的规律，能解别人解不开的题。你的牛逼之处在于：你的脑子里装了一套别人没有的“操作系统”。搞技术、搞研究、搞分析、搞任何需要脑子的活儿，你都是王者。那些嘲笑你的人，等遇到难题时第一个想到的肯定是你。继续当你的极客怪，继续在知识的海洋里游泳。你是人形超级计算机，牛逼！" },
+        "疯批！！": { name:"疯批美人", full:"Crazy Radically Awesome Zealous Yeah", translation:"疯批美人/莽撞人", image:"CRAZ-Y.jpg",
+            desc:"你做事的风格就像开车不带刹车——想到一个点子，马上冲；看到一个机会，立刻扑；喜欢一个人，当场表白。你的人生没有“预热”模式，一上来就是全速前进。你的室友/同事经常被你突如其来的激情吓到：半夜两点突然爬起来写方案、周末突然报名一个马拉松、周一突然辞职说要去创业。他们一边觉得你疯了，一边偷偷羡慕你的劲头。你经常把事情搞砸，因为你冲得太快没看清路。但你也经常把事情搞成，因为你冲得太快抢在了所有人前面。你的口头禅是：“管它呢，先试试再说！”失败对你来说不是打击，而是“下一个实验的数据”。你就像一个永远在爆炸边缘的烟花，要么炸得漂亮，要么炸成渣——但无论如何，你都会炸。你常说：“人生嘛，不疯魔不成活。”",
+            encourage:"那位自称“疯子”的CRAZY人，你给我听好了：你的疯狂背后，是极致的热情和这个时代最稀缺的冒险精神！你知道有多少人被“万一失败了怎么办”吓得连第一步都不敢迈吗？你没有这种废话。你直接迈，哪怕摔了也是脸朝前。你的“莽撞”让你比那些谨慎的人早三年抓住机会。你的牛逼之处在于：你敢于打破常规。而人类所有的进步，都始于某个“疯子”的不守规矩。继续疯，继续冲。就算摔成狗啃泥，你也是摔得最帅的那个。你是人形烟花，牛逼！" },
+        "爹妈！！": { name:"爹/妈", full:"Dad And Mom Attitude", translation:"爹/妈/大家长", image:"DADA.jpg",
+            desc:"你是朋友圈里的“老妈子”兼“老父亲”。出门玩你负责带纸巾、充电宝、创可贴、雨伞、零食；聚餐你负责点菜、催菜、买单、算账、分菜；朋友失恋你负责陪聊到凌晨三点，顺便帮ta分析感情问题、写分手文案、甚至帮ta搬家。你嘴上说着“我也好累啊”“下次别找我了”，但下一次大家还是习惯性找你，你也还是习惯性答应。你不一定喜欢当妈/当爹，但你的朋友们没你真的活不下去——他们连地铁卡没钱了都找你借。你的朋友经常把你当“人形Siri”：问路找你，查资料找你，连“我该不该和ta分手”都找你。你有时候烦得要死，但看到他们依赖你的眼神，你又心软了。你常说：“唉，都是债。”",
+            encourage:"那位总在照顾别人的DADA，你是不是经常觉得“凭什么都是我”？我告诉你：凭你是这个破朋友圈里最牛逼的定心丸！你知道你的存在对别人意味着什么吗？意味着“只要ta在，天就不会塌”。你的共情能力、付出精神、靠谱程度，让你成为团队里不可替代的“情绪底座”。你的牛逼之处在于：你让别人感到安全。在这个人人自顾不暇、充满算计的时代，你这种“托底型”人格是最珍贵的伙伴。当然，你也要学会偶尔让别人照顾你一下。但在此之前，请继续当你的大家长。你是人间暖宝宝，牛逼！" },
+        "变色！！": { name:"变色龙", full:"Chameleon Human And Master", translation:"变色龙/社交变形金刚", image:"BIAN.jpg",
+            desc:"你是社交界的变形金刚、人格切换大师。面对导师/领导，你是乖巧好学生/好员工，说话轻声细语、做事滴水不漏；面对学弟学妹，你是靠谱前辈，知无不言、言无不尽；面对朋友，你是疯癫喜剧人，满嘴跑火车、笑到打滚；面对陌生人，你是高冷冰山，惜字如金、生人勿近。你经常自己也分不清哪个才是“真的你”。但神奇的是，每一个都挺像真的。你的朋友说你“虚伪”，但你心里清楚：这不是虚伪，这是在不同的场合穿不同的衣服——就像你不会穿泳衣去上班一样。你的适应能力强到离谱。把你扔进任何一个新环境，你都能在三天内找到自己的位置和说话方式。你不是没有原则，你是原则就是“别让自己难受”。你常说：“见人说人话，见鬼说鬼话，见到你嘛……说废话。”",
+            encourage:"嘿，CHAM！你是不是经常被说“假”“圆滑”“不真实”？我告诉你：你这种社交适应力，是职场和人际关系里的顶级软实力！你知道有多少人因为“太真实”而得罪人吗？有多少人因为“不会来事儿”而错失机会吗？你不会。你能在不同场合穿上最合适的人格外套，既不委屈自己，也不冒犯别人。你的牛逼之处在于：你是人际关系里的“万能插头”，走到哪儿都能通上电。这种灵活性和高情商，是无数人想学学不会的天赋。继续变你的色，继续做你的变形金刚。你不是虚伪，你是社交界的瑞士军刀，牛逼！" },
+        "独狼！！": { name:"孤狼", full:"Loner Oh Never Empty", translation:"孤狼/独行侠", image:"LONE.jpg",
+            desc:"你的社交宣言是：“莫挨老子，我自己能行。”你可以一个人吃饭、一个人看电影、一个人去医院、一个人搬家、一个人吃火锅、一个人唱KTV。你觉得人类的悲欢并不相通，你只觉得他们吵闹。你的同事/同学觉得你高冷、不好接近，其实你只是觉得“社交好累，不如独处”。你不是讨厌别人，你是讨厌“为了不尴尬而强行找话题”的消耗感。你一个人待着的时候，快乐极了。你可以看书、打游戏、学技能、发呆、睡觉，没有任何人来烦你。你觉得自己就像一个自给自足的小星球，不需要卫星也能转得很好。偶尔有人想拉你出去玩，你礼貌拒绝：“谢谢，我有约了。”——和自己有约。你常说：“一个人，挺好。”",
+            encourage:"那位独来独往的LONE狼，你是不是经常被说“不合群”“孤僻”？来，我告诉你真相：你这种顶级的独处能力，是90%的人一辈子都修炼不出来的神功！你知道有多少人因为害怕孤独而陷入烂关系、烂社交、烂聚会吗？你不会。你不需要从外界获取情绪价值，你自己就是一个完整的生态系统。你的牛逼之处在于：孤独对你来说是充电，而不是耗电。别人一个人待三天就疯了，你一个人待三年还能搞出一番大事业。这种精神独立性，让你在需要独立完成的工作/学习中碾压众生。继续当你的孤狼，继续享受一个人的快乐。你不是不合群，你是自己就是一个群。牛逼！" },
+        "散财！！": { name:"散财童子", full:"Generous Individual Very Empathic", translation:"散财童子/活菩萨", image:"GIVE-R.jpg",
+            desc:"你就像一尊活菩萨转世，而且是个“散财版”的。别人一开口你就不好意思拒绝，别人借钱你不好意思要回，别人的麻烦事你总忍不住插一脚。你的朋友说“你人太好了容易吃亏”，你笑着点头，然后继续帮忙。你就像一台ATM机——插进去的是你的时间、精力、金钱，吐出来的是“没事有我”“不客气”“下次请我喝奶茶就行”（但奶茶从来没喝到过）。你帮别人改简历、帮别人搬家、帮别人写作业、帮别人擦屁股，你自己的事反而一拖再拖。你不是不懂拒绝，你是觉得“拒绝别人好难，还是自己累点算了”。你常被发“好人卡”，你苦笑：“好人卡有什么用，能当饭吃吗？”然后继续做好人。你常说：“算了算了，我来吧。”",
+            encourage:"那位总是“给给给”的GIVE，你是不是觉得自己像个冤大头？我告诉你：你是这个自私世界里最稀缺的“利他主义者”，你的善良是一笔巨大的隐形资产！你知道你的口碑有多好吗？你知道有多少人心里记着你的好吗？当你真正遇到困难的时候，振臂一呼，会有很多人愿意帮你——因为你曾经帮过他们，而且你从不计较。你的牛逼之处在于：你播下的善种，总有一天会发芽。你不是冤大头，你是人情银行里的顶级富豪。当然，你也要学会说“不”，保护好自己的边界。但在那之前，继续做你的活菩萨。你是人间小太阳，牛逼！" },
+        "霸总！！": { name:"国王/女王", full:"Kicking It Naturally Great", translation:"国王/女王/霸总本总", image:"KING.jpg",
+            desc:"你的手里永远拿着一个虚拟权杖。哪怕是下楼倒垃圾，你都能走出登基的气势。你天生自带“别废话，听我的”气场，小组作业里你不知不觉就成了组长，工作中你总能让别人跟着你的节奏走。你不是在卷，你是在“统治”。你的字典里没有“随便”，只有“最优解”。别人问你“中午吃啥”，你说“黄焖鸡，因为离得近、出餐快、性价比最高”。你的朋友服了：“吃个饭都要做决策，你累不累？”你面无表情：“决策不累，犹豫才累。”你追求效率到了变态的程度。你看不惯磨洋工的人，看不惯开会废话连篇的人，看不惯做事没有章法的人。你不是脾气差，你只是觉得“浪费生命是一种罪”。你常说：“别废话，干正事。”",
+            encourage:"那位总想当KING的同学/同事，你是不是经常被人说“控制欲强”“太强势”？我告诉你：你这种天然的领袖气质和强大的内驱力，是无数人跪着求都求不来的天赋！你知道有多少团队因为没有主心骨而散架吗？有多少项目因为没有决策者而流产吗？有你在，这些都不是问题。你能把一群人拧成一股绳，往同一个方向冲。你的牛逼之处在于：你不仅自己能成事，还能带着一群人成事。你就是人形的“气场发生器”，方圆五米内的空气都会变得严肃而高效。继续当你的KING，继续统治你的小王国。你不是霸道，你是人间定海神针。牛逼！" },
+        "吐槽！！": { name:"吐槽战士", full:"Critical Realistic Intelligent Thinker", translation:"键盘侠·褒义版/吐槽战士", image:"CRIT.jpg",
+            desc:"你看啥都不顺眼，吐槽能量爆棚。老板的方案你觉得是💩，老师的PPT你觉得是古董，连楼下煎饼果子涨价五毛钱你都能写一篇小作文批判。你的朋友叫你“杠精”，但你每次都杠在点子上，让他们无话可说。你不是为了杠而杠，你是真的能看到别人看不到的漏洞。你的眼睛就像X光机，任何方案的缺陷、逻辑的漏洞、流程的问题，在你面前都无所遁形。你经常被人说“负能量”“太挑剔”，但你心里清楚：发现问题的人，才是真正想解决问题的人。那些只会说“好好好”的人，才是最大的不负责任。你常说：“不是我想杠，是这个东西真的有毛病。”",
+            encourage:"嘿，CRIT！你是不是经常被说“事儿多”“难伺候”？我告诉你：你这种批判性思维，是系统BUG的天敌，是团队里最值钱的啄木鸟！你知道有多少项目因为没人敢说“不”而走上歪路吗？有多少决策因为没人指出漏洞而酿成大错吗？有你在，这些都能被提前扼杀。你的牛逼之处在于：你的吐槽不是情绪发泄，而是精准的手术刀。你能切中要害，直指核心。这种能力放在质检、风控、策划、咨询等岗位上，你就是王牌。继续杠，继续吐槽。你是人间漏洞扫描器，牛逼！" },
+        "躺尸！！": { name:"行尸走肉", full:"Zero Original Motivation But", translation:"行尸走肉/活死人", image:"ZOMB.jpg",
+            desc:"你的肉体还在工位上敲键盘/在教室里听课，但你的灵魂已经在三年前那个周五下午下班/放学时走丢了。你对一切都提不起兴趣，觉得人生不过是一场漫长的排队等死。你不是在活着，你是在“还没死”。朋友约你出去玩，你说“算了，懒得动”；公司/学校搞活动，你说“没意思，不想去”；甚至吃饭，你都觉得“随便，能饱就行”。你的日常就是：上班/上学 → 摸鱼 → 下班/放学 → 躺平 → 睡觉 → 循环。你没有梦想，没有目标，没有激情，甚至连emo都懒得emo了。你觉得自己像一个被抽干了电池的玩具，放在角落里积灰。有人问你“你怎么了”，你摇摇头：“没怎么，就是……没劲。”",
+            encourage:"那位觉得“人间不值得”的ZOMB，你先别划走！我告诉你一个秘密：你已经到达了“物极必反”的临界点，你现在是整个测试里潜力最大的人！你知道为什么吗？因为当一个人彻底绝望之后，剩下的就只有平静和无所畏惧。你已经没什么可失去的了，所以你也什么都不怕了。你的牛逼之处在于：任何微小的正向反馈，都能让你触底反弹。今天喝到一杯好喝的奶茶，你可能会觉得“嗯，还行”；明天看到一个有意思的机会，你可能会觉得“要不试试”。而只要你试了，你就比别人更容易成功——因为你已经没有什么可以输的了。你不是行尸走肉，你是正在冬眠的巨龙。等春天来了，你会醒的。在那之前，先好好活着，哪怕只是躺着。牛逼！（真的）" },
+        "自燃！！": { name:"自燃人", full:"Fiercely Intrinsic Relentless Engine", translation:"自燃人/永动机", image:"FIRE.jpg",
+            desc:"你不需要鸡汤，不需要打鸡血，不需要别人催，你自己就是那个打火机。别人还在床上挣扎着要不要去跑步，你已经跑完五公里洗完澡了；别人还在纠结要不要学个新技能，你已经考完证了；别人还在想“今天要不要加班”，你已经把明天的活也干完了。你身边的人经常被你卷到焦虑，但你一脸无辜：“我只是在做自己的事啊。”你不是为了跟别人比，你是真的享受“变强”的感觉。你觉得进步就像打游戏升级，每升一级都很快乐。你的日程表密密麻麻，你的待办清单永远比别人的长。你不觉得累吗？你摇摇头：“习惯了。”你常说：“闲着也是闲着，不如做点事。”",
+            encourage:"那位“自燃型”的FIRE人，你是不是经常被人说“太卷了”“能不能别卷了”？我告诉你：你的内驱力是永动机，是别人花钱都买不来的顶级天赋！你知道有多少人需要外界激励才能动一下吗？有多少人需要老板盯着、老师催着才能干活吗？你不需要。你自己就是自己的老板、自己的教练、自己的啦啦队。你的牛逼之处在于：你不需要外部奖励就能持续进步。这种“自燃型”人格在任何领域都是顶级人才——因为你永远不会停下，而时间会给你最好的回报。继续卷自己，继续燃烧。但记得偶尔也躺一下，别烧没了。你是人形火箭发动机，牛逼！" }
+    };
+
+    // 维度等级判定
+    function getLevel(score) {
+        if (score >= 20) return "high";
+        if (score >= 10) return "mid";
+        return "low";
+    }
+
+    // 16型映射规则（基于四个维度的高中低组合）
+    function getPersonality(scores) {
+        const pL = getLevel(scores.P);
+        const eL = getLevel(scores.E);
+        const rL = getLevel(scores.R);
+        const mL = getLevel(scores.MA);
+        const key = `${pL}_${eL}_${rL}_${mL}`;
+        const map = {
+            "high_high_high_high":"哈哈！！", "high_high_high_low":"活1！！", "high_high_low_high":"哇哇！！", "high_high_low_low":"我废！！",
+            "high_low_high_high":"哈哈！！", "high_low_high_low":"活1！！", "high_low_low_high":"哇哇！！", "high_low_low_low":"我废！！",
+            "low_high_high_high":"干吧！！", "low_high_high_low":"拿捏！！", "low_high_low_high":"书虫！！", "low_high_low_low":"疯批！！",
+            "low_low_high_high":"爹妈！！", "low_low_high_low":"变色！！", "low_low_low_high":"独狼！！", "low_low_low_low":"散财！！",
+            "mid_mid_mid_high":"霸总！！", "mid_mid_low_high":"吐槽！！", "mid_mid_high_high":"自燃！！", "low_low_low_low":"躺尸！！"
+        };
+        if (map[key]) return map[key];
+        // 后备规则：找最高分维度
+        const maxDim = Object.keys(scores).reduce((a,b) => scores[a] > scores[b] ? a : b);
+        if (maxDim === "P") return "哈哈！！";
+        if (maxDim === "E") return "干吧！！";
+        if (maxDim === "R") return "爹妈！！";
+        return "霸总！！";
+    }
+
+    // 渲染题目列表
+    const container = document.getElementById("questionsContainer");
+    function renderQuestions() {
+        let html = '';
+        questions.forEach((q, idx) => {
+            html += `<div class="question-card" data-qid="${idx}">
+                        <div class="question-title"><span class="q-num">第${idx+1}题</span><span class="q-text">${q.text}</span></div>
+                        <div class="options">
+                            ${q.options.map((opt, optIdx) => `<div class="option" data-opt-index="${optIdx}">
+                                <input type="radio" name="q${idx}" value="${optIdx}" id="q${idx}_${optIdx}">
+                                <label for="q${idx}_${optIdx}">${String.fromCharCode(65+optIdx)}. ${opt}</label>
+                            </div>`).join('')}
+                        </div>
+                    </div>`;
+        });
+        container.innerHTML = html;
+        // 点击整行选项时选中radio
+        document.querySelectorAll('.option').forEach(optDiv => {
+            const radio = optDiv.querySelector('input');
+            optDiv.addEventListener('click', (e) => {
+                if (e.target.tagName !== 'INPUT') {
+                    radio.checked = true;
+                    radio.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            });
+        });
+        document.querySelectorAll('input[type="radio"]').forEach(radio => radio.addEventListener('change', updateProgress));
+        updateProgress();
+    }
+
+    function updateProgress() {
+        let answered = 0;
+        for (let i = 0; i < questions.length; i++) {
+            if (document.querySelector(`input[name="q${i}"]:checked`)) answered++;
+        }
+        document.getElementById('progressBar').style.width = `${(answered / questions.length) * 100}%`;
+    }
+
+    function computeScores() {
+        let scores = {P:0, E:0, R:0, MA:0};
+        for (let i = 0; i < questions.length; i++) {
+            const selected = document.querySelector(`input[name="q${i}"]:checked`);
+            if (!selected) return null;
+            const points = scoreMap[parseInt(selected.value)];
+            if (i < 10) scores.P += points;
+            else if (i < 20) scores.E += points;
+            else if (i < 30) scores.R += points;
+            else scores.MA += points;
+        }
+        return scores;
+    }
+
+    function showResult(scores) {
+        const key = getPersonality(scores);
+        const data = personalities[key];
+        if (!data) return;
+        const resultDiv = document.getElementById("resultContainer");
+        const imgUrl = `./images/${data.image}`;
+        resultDiv.innerHTML = `
+            <div class="result-img">
+                <img src="${imgUrl}" alt="${data.name}形象" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'%3E%3Crect width=\\'100\\' height=\\'100\\' fill=\\'%23fbc4d0\\'/%3E%3Ctext x=\\'50\\' y=\\'67\\' font-size=\\'50\\' text-anchor=\\'middle\\' fill=\\'%23c2415c\\'%3E🤪%3C/text%3E%3C/svg%3E';">
+            </div>
+            <div class="result-name">${data.name} · ${key}</div>
+            <div class="result-sub">${data.full} · ${data.translation}</div>
+            <div class="result-desc"><strong>🎭 给你的评价</strong><br>${data.desc}</div>
+            <div class="result-encourage"><strong>💪 牛在哪儿</strong><br>${data.encourage}</div>
+            <button class="btn restart-btn" id="restartBtn">🔄 重新测试</button>
+        `;
+        resultDiv.style.display = "block";
+        resultDiv.scrollIntoView({ behavior: "smooth", block: "start" });
+        document.getElementById("restartBtn").addEventListener("click", () => {
+            document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+            resultDiv.style.display = "none";
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+    }
+
+    document.getElementById("submitBtn").addEventListener("click", () => {
+        const scores = computeScores();
+        if (!scores) { alert("喂！还有题目没选呢～ 全部答完才能看结果哦 🧐"); return; }
+        showResult(scores);
+    });
+
+    renderQuestions();
+</script>
+</body>
+</html>
